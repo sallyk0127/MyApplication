@@ -25,9 +25,9 @@ class EntityAdapter(
         fun bind(entity: Entity) {
             prop1.text = entity.exerciseName
             prop2.text = entity.muscleGroup
-            prop3.text = entity.exerciseName
-            prop4.text = entity.equipment
-            prop5.text = entity.caloresBurnedPerHour
+            prop3.text = entity.equipment
+            prop4.text = entity.difficulty
+            prop5.text = entity.caloriesBurnedPerHour.toString()
 
             itemView.setOnClickListener {
                 onItemClick(entity)

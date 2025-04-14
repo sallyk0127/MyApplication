@@ -33,7 +33,10 @@ class DetailsFragment : Fragment() {
         binding.apply {
             exerciseNameTitle.text = entity.exerciseName
             muscleGroupTitle.text = entity.muscleGroup
-            equipmentDescription.text = entity.description
+            equipmentDescription.text = entity.equipment
+            difficultyDescription.text = entity.difficulty
+            caloriesBurnedPerHourDescription.text = entity.caloriesBurnedPerHour.toString()
+            description.text = entity.description
         }
     }
 

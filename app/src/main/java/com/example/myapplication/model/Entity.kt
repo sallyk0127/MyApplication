@@ -9,6 +9,6 @@ data class Entity(
     val muscleGroup: String,
     val equipment: String,
     val difficulty: String,
-    val caloresBurnedPerHour: String,
+    val caloriesBurnedPerHour: Int,
     val description: String
 ) : Parcelable
