@@ -10,7 +10,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textViewProperty1"
+            android:id="@+id/exerciseNameTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Property 1"
@@ -18,7 +18,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textViewProperty2"
+            android:id="@+id/muscleGroupTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Property 2"
@@ -27,11 +27,35 @@
             android:layout_marginTop="8dp" />
 
         <TextView
-            android:id="@+id/textViewDescription"
+            android:id="@+id/equipmentDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Description"
             android:textSize="16sp"
             android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/difficultyDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Description"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/caloriesBurnedPerHourDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Description"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Description"
+            android:textSize="16sp" />
     </LinearLayout>
 </ScrollView>

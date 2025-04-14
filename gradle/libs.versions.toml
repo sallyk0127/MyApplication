@@ -8,6 +8,7 @@ coreKtxVersion = "1.12.0"
 espressoCoreVersion = "3.5.1"
 hiltAndroid = "2.51.1"
 hiltCompiler = "2.48"
+hiltCompilerVersion = "2.51.1"
 kotlin = "2.0.21"
 junit = "4.13.2"
 appcompat = "1.7.0"
@@ -38,6 +39,7 @@ androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }
+hilt-compiler-v2511 = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompilerVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCoreVersion" }

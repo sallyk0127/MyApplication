@@ -1,20 +1,36 @@
 package com.example.myapplication.ui.dashboard
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.myapplication.model.Entity
+import com.example.myapplication.network.ApiService
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DashboardViewModel : ViewModel() {
+@HiltViewModel
+class DashboardViewModel @Inject constructor(
+    private val apiService: ApiService
+) : ViewModel() {
 
-    private val _entities = MutableLiveData<List<Entity>>()
-    val entities: LiveData<List<Entity>> get() = _entities
+    private val _entities = MutableStateFlow<List<Entity>>(emptyList())
+    val entities: StateFlow<List<Entity>> = _entities
 
-    fun loadDashboard() {
-        // TEMPORARY STATIC DATA — Replace with actual API logic later
-        _entities.value = listOf(
-            Entity("Value 1", "Value 2", "Some description"),
-            Entity("Another 1", "Another 2", "Another desc")
-        )
+    private val _error = MutableStateFlow<String?>(null)
+    val error: StateFlow<String?> = _error
+
+    fun loadDashboard(keypass: String) {
+        viewModelScope.launch {
+            try {
+                val response = apiService.getDashboardData(keypass)
+                _entities.value = response.entities
+                _error.value = null // Clear previous errors
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _error.value = e.message ?: "Something went wrong loading dashboard data"
+            }
+        }
     }
 }

@@ -15,12 +15,20 @@ class EntityAdapter(
 ) : RecyclerView.Adapter<EntityAdapter.EntityViewHolder>() {
 
     inner class EntityViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val prop1: TextView = view.findViewById(R.id.property1Text)
-        private val prop2: TextView = view.findViewById(R.id.property2Text)
+        private val prop1: TextView = view.findViewById(R.id.exerciseNameEntity)
+        private val prop2: TextView = view.findViewById(R.id.muscleGroupEntity)
+        private val prop3: TextView = view.findViewById(R.id.equipmentEntity)
+        private val prop4: TextView = view.findViewById(R.id.difficultyEntity)
+        private val prop5: TextView = view.findViewById(R.id.caloriesBurnedPerHourEntity)
+
 
         fun bind(entity: Entity) {
-            prop1.text = entity.property1
-            prop2.text = entity.property2
+            prop1.text = entity.exerciseName
+            prop2.text = entity.muscleGroup
+            prop3.text = entity.exerciseName
+            prop4.text = entity.equipment
+            prop5.text = entity.caloresBurnedPerHour
+
             itemView.setOnClickListener {
                 onItemClick(entity)
             }
