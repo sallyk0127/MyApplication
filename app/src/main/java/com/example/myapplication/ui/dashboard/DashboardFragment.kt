@@ -6,14 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.R
+import com.example.myapplication.databinding.FragmentDashboardBinding
+import com.example.myapplication.model.Entity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DashboardFragment : Fragment() {
 
-    private lateinit var recyclerView: RecyclerView
+    private var _binding: FragmentDashboardBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var adapter: EntityAdapter
     private var keypass: String? = null
 
@@ -21,24 +23,24 @@ class DashboardFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_dashboard, container, false)
+        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        keypass = arguments?.getString("keypass") // Pass key from Login screen via bundle
+        keypass = arguments?.getString("keypass")
 
-        recyclerView = view.findViewById(R.id.recyclerView)
         adapter = EntityAdapter { selectedEntity ->
-            val bundle = Bundle().apply {
-                putSerializable("entity", selectedEntity)
-            }
-            findNavController().navigate(R.id.action_dashboard_to_details, bundle)
+            val action = DashboardFragmentDirections
+                .actionDashboardFragmentToDetailsFragment(selectedEntity)
+            findNavController().navigate(action)
         }
-        recyclerView.adapter = adapter
 
-        // Simulated API fetch
+        binding.recyclerView.adapter = adapter
+
+        // Simulated API response for testing
         val entities = getFakeEntities()
         adapter.updateData(entities)
     }
@@ -49,5 +51,10 @@ class DashboardFragment : Fragment() {
             Entity("Title 2", "Subtitle 2", "Desc 2"),
             Entity("Title 3", "Subtitle 3", "Desc 3")
         )
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

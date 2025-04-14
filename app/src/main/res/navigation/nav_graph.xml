@@ -17,13 +17,26 @@
         android:id="@+id/dashboardFragment"
         android:name="com.example.myapplication.ui.dashboard.DashboardFragment"
         android:label="Dashboard">
+
+        <!-- If you want to pass keypass to DashboardFragment -->
+        <argument
+            android:name="keypass"
+            app:argType="string"
+            app:nullable="true" />
+
         <action
-            android:id="@+id/action_dashboard_to_details"
+            android:id="@+id/action_dashboardFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.example.myapplication.ui.details.DetailsFragment"
-        android:label="Details" />
+        android:label="Details">
+        <argument
+            android:name="entity"
+            app:argType="com.example.myapplication.model.Entity"
+            app:nullable="false" />
+    </fragment>
+
 </navigation>
