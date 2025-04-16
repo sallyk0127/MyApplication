@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.FragmentDashboardBinding
 import com.example.myapplication.model.Entity
@@ -16,18 +17,22 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-// Dashboard displays a list of entities retrieved from the API.
+// DashboardFragment displays a list of entities fetched from the API using the keypass.
 
 @AndroidEntryPoint
 class DashboardFragment : Fragment() {
 
-    // ViewBinding to access layout elements
+    // ViewBinding to access layout views safely
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
 
-    // DashboardViewModel to fetch data
+    // ViewModel injected using Hilt
     private val viewModel: DashboardViewModel by viewModels()
-    // EntityAdapter to show items in a RecyclerView
+
+    // navArgs to retrieve arguments passed from LoginFragment
+    private val args: DashboardFragmentArgs by navArgs()
+
+    // RecyclerView adapter to display the list of entities
     private lateinit var adapter: EntityAdapter
 
     override fun onCreateView(
@@ -41,7 +46,7 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialise RecyclerView with a linear layout and adapter
+        // Setup RecyclerView with adapter and layout manager
         adapter = EntityAdapter { selectedEntity: Entity ->
             val action = DashboardFragmentDirections
                 .actionDashboardFragmentToDetailsFragment(selectedEntity)
@@ -50,22 +55,17 @@ class DashboardFragment : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
 
-        // Fetch keypass from arguments passed from LoginFragment
-        val keypass = arguments?.getString("keypass")
-        if (keypass != null) {
-            viewModel.loadDashboard(keypass)
-        } else {
-            Toast.makeText(requireContext(), "Missing keypass", Toast.LENGTH_SHORT).show()
-        }
+        // ✅ Use keypass received from LoginFragment
+        viewModel.loadDashboard(args.keypass)
 
-        // Collect entities
+        // Observe the list of entities and update UI
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.entities.collectLatest { entityList ->
                 adapter.updateData(entityList)
             }
         }
 
-        // Collect error messages
+        // Observe and show any error messages
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.error.collectLatest { errorMsg: String? ->
                 errorMsg?.let {

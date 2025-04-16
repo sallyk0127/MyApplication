@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.dashboard
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.model.Entity
@@ -26,11 +27,13 @@ class DashboardViewModel @Inject constructor(
             try {
                 //Fetch dashboard data using the keypass received from login
                 val response = apiService.getDashboardData(keypass)
+                Log.d("DashboardViewModel", "Response: $response")
                 _entities.value = response.entities
                 _error.value = null
             } catch (e: Exception) {
-                e.printStackTrace()
-                _error.value = e.message ?: "Something went wrong loading dashboard data"
+                _entities.value = emptyList()
+                _error.value = "Failed to load dashboard: ${e.message}"
+                Log.e("DashboardViewModel", "Error loading dashboard", e)
             }
         }
     }
