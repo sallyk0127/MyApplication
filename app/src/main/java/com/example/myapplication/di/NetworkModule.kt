@@ -10,6 +10,7 @@ import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
+import com.example.myapplication.ui.login.AuthRepository
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -33,4 +34,9 @@ object NetworkModule {
     @Singleton
     fun provideApiService(retrofit: Retrofit): ApiService =
         retrofit.create(ApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideAuthRepository(apiService: ApiService): AuthRepository =
+        AuthRepository(apiService)
 }

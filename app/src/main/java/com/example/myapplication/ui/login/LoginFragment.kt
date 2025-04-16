@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.login
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,31 +35,41 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonLogin.setOnClickListener {
-            val username = binding.editTextUsername.text.toString()
-            val password = binding.editTextPassword.text.toString()
+            val username = binding.editTextUsername.text.toString().trim()
+            val password = binding.editTextPassword.text.toString().trim()
             val campus = when (binding.radioGroup.checkedRadioButtonId) {
                 binding.radioFootscray.id -> "footscray"
                 binding.radioSydney.id -> "sydney"
                 binding.radioOrt.id -> "ort"
-                else -> "sydney" // default fallback
+                else -> null
             }
 
+            if (username.isEmpty() || password.isEmpty() || campus == null) {
+                Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
+            Log.d("LoginFragment", "Login pressed: $campus / $username")
             viewModel.login(campus, username, password)
         }
 
-        lifecycleScope.launch {
+        // Observe successful login
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.keypass.collectLatest { keypass ->
-                keypass?.let {
-                    val action = LoginFragmentDirections.actionLoginToDashboard(it)
+                if (keypass != null) {
+                    Log.d("LoginFragment", "Login successful. Keypass: $keypass")
+                    // Navigate to Dashboard and pass 'keypass' using SafeArgs (type-safe navigation)
+                    val action = LoginFragmentDirections.actionLoginToDashboard(keypass)
                     findNavController().navigate(action)
                 }
             }
         }
 
-        lifecycleScope.launch {
+        // Observe login errors
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.error.collectLatest { errorMsg ->
                 errorMsg?.let {
+                    Log.e("LoginFragment", "Login failed: $it")
                     Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
                 }
             }

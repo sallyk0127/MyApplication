@@ -1,5 +1,5 @@
 package com.example.myapplication.model
 
-data class AuthResponse(
+data class LoginResponse(
     val keypass: String
 )
