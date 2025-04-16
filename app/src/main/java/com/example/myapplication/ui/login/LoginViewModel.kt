@@ -10,19 +10,28 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import com.example.myapplication.model.LoginResponse
+
+// ViewModel for the Login screen.
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val apiService: ApiService
+    private val apiService: ApiService // Injected from Hilt (provided by NetworkModule)
 ) : ViewModel() {
 
+    // Holds the keypass returned by the API on successful login
     private val _keypass = MutableStateFlow<String?>(null)
     val keypass: StateFlow<String?> = _keypass
 
+    // Holds any error messages to be displayed in the UI
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
+    /**
+     * Called when user taps the Login button.
+     * Sends a POST request to the login endpoint using Retrofit.
+     * On success: sets the keypass.
+     * On failure: sets an error message.
+     */
     fun login(campus: String, username: String, password: String) {
         viewModelScope.launch {
             try {

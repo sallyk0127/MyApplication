@@ -16,13 +16,18 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+// Dashboard displays a list of entities retrieved from the API.
+
 @AndroidEntryPoint
 class DashboardFragment : Fragment() {
 
+    // ViewBinding to access layout elements
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
 
+    // DashboardViewModel to fetch data
     private val viewModel: DashboardViewModel by viewModels()
+    // EntityAdapter to show items in a RecyclerView
     private lateinit var adapter: EntityAdapter
 
     override fun onCreateView(
@@ -36,7 +41,7 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Setup RecyclerView
+        // Initialise RecyclerView with a linear layout and adapter
         adapter = EntityAdapter { selectedEntity: Entity ->
             val action = DashboardFragmentDirections
                 .actionDashboardFragmentToDetailsFragment(selectedEntity)
@@ -45,7 +50,7 @@ class DashboardFragment : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
 
-        // Fetch keypass from arguments
+        // Fetch keypass from arguments passed from LoginFragment
         val keypass = arguments?.getString("keypass")
         if (keypass != null) {
             viewModel.loadDashboard(keypass)

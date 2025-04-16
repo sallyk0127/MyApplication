@@ -5,6 +5,8 @@ import com.example.myapplication.model.LoginRequest
 import com.example.myapplication.model.LoginResponse
 import retrofit2.http.*
 
+// Defines endpoints and handles user authentication and dashboard data retrieval.
+
 interface ApiService {
 
     @POST("{campus}/auth")

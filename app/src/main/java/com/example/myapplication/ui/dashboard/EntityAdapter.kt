@@ -9,11 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.model.Entity
 
+// RecyclerView Adapter displays a list of Entity objects in the Dashboard.
+
 class EntityAdapter(
     private var dataList: List<Entity> = listOf(),
     private val onItemClick: (Entity) -> Unit
 ) : RecyclerView.Adapter<EntityAdapter.EntityViewHolder>() {
 
+    // ViewHolder for each entity item. Binds data to the item layout views
     inner class EntityViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val prop1: TextView = view.findViewById(R.id.exerciseNameEntity)
         private val prop2: TextView = view.findViewById(R.id.muscleGroupEntity)
@@ -21,7 +24,7 @@ class EntityAdapter(
         private val prop4: TextView = view.findViewById(R.id.difficultyEntity)
         private val prop5: TextView = view.findViewById(R.id.caloriesBurnedPerHourEntity)
 
-
+        // Click listener that calls the provided onItemClick callback
         fun bind(entity: Entity) {
             prop1.text = entity.exerciseName
             prop2.text = entity.muscleGroup

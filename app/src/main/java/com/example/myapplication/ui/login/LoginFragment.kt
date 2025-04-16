@@ -50,6 +50,7 @@ class LoginFragment : Fragment() {
             }
 
             Log.d("LoginFragment", "Login pressed: $campus / $username")
+            // Calls AuthRepository to authenticate and calls keypass or error
             viewModel.login(campus, username, password)
         }
 
@@ -58,7 +59,7 @@ class LoginFragment : Fragment() {
             viewModel.keypass.collectLatest { keypass ->
                 if (keypass != null) {
                     Log.d("LoginFragment", "Login successful. Keypass: $keypass")
-                    // Navigate to Dashboard and pass 'keypass' using SafeArgs (type-safe navigation)
+                    // Observe keypass using SafeArgs and navigate to Dashboard when login is successful
                     val action = LoginFragmentDirections.actionLoginToDashboard(keypass)
                     findNavController().navigate(action)
                 }

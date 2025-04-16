@@ -24,9 +24,10 @@ class DashboardViewModel @Inject constructor(
     fun loadDashboard(keypass: String) {
         viewModelScope.launch {
             try {
+                //Fetch dashboard data using the keypass received from login
                 val response = apiService.getDashboardData(keypass)
                 _entities.value = response.entities
-                _error.value = null // Clear previous errors
+                _error.value = null
             } catch (e: Exception) {
                 e.printStackTrace()
                 _error.value = e.message ?: "Something went wrong loading dashboard data"

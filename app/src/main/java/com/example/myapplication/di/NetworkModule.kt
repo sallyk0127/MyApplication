@@ -12,12 +12,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 import com.example.myapplication.ui.login.AuthRepository
 
+// Dagger Hilt module that provides all network-related dependencies.
+
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
+    // Base URL of the backend API
     private const val BASE_URL = "https://nit3213api.onrender.com/"
 
+    // Retrofit Singleton Gson instance converts JSON to Kotlin objects.
     @Provides
     @Singleton
     fun provideGson(): Gson = GsonBuilder().create()
