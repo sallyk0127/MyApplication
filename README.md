@@ -100,4 +100,4 @@ Built with 💜 using Android Studio
 ---
 
 # 📄 License
-This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License – see the [LICENSE](app/LICENSE) file for details.
