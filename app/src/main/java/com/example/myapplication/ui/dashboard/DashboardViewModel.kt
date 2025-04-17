@@ -27,7 +27,7 @@ class DashboardViewModel @Inject constructor(
             try {
                 //Fetch dashboard data using the keypass received from login
                 val response = apiService.getDashboardData(keypass)
-                Log.d("DashboardViewModel", "Response: $response")
+                Log.d("DashboardViewModel", "Response: ${response.entities}")
                 _entities.value = response.entities
                 _error.value = null
             } catch (e: Exception) {

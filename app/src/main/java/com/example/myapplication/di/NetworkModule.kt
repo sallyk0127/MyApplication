@@ -1,5 +1,7 @@
 package com.example.myapplication.di
 
+import com.example.myapplication.model.Entity
+import com.example.myapplication.model.EntityDeserializer
 import com.example.myapplication.network.ApiService
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -24,7 +26,9 @@ object NetworkModule {
     // Retrofit Singleton Gson instance converts JSON to Kotlin objects.
     @Provides
     @Singleton
-    fun provideGson(): Gson = GsonBuilder().create()
+    fun provideGson(): Gson = GsonBuilder()
+        .registerTypeAdapter(Entity::class.java, EntityDeserializer())
+        .create()
 
     @Provides
     @Singleton

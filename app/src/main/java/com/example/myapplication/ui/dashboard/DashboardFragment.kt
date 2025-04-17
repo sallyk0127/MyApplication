@@ -55,7 +55,7 @@ class DashboardFragment : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
 
-        // ✅ Use keypass received from LoginFragment
+        // Use keypass received from LoginFragment
         viewModel.loadDashboard(args.keypass)
 
         // Observe the list of entities and update UI
