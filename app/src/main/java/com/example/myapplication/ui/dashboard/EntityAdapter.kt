@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.dashboard
 
 import android.annotation.SuppressLint
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,14 +19,31 @@ class EntityAdapter(
     inner class EntityViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val container: LinearLayout = view.findViewById(R.id.dynamicFieldsContainer)
 
-        @SuppressLint("SetTextI18n")
         fun bind(entity: Entity) {
             container.removeAllViews()
 
-            entity.data.forEach { (key, value) ->
-                val textView = TextView(container.context)
-                textView.text = "${key.replaceFirstChar { it.uppercaseChar() }}: ${value ?: "N/A"}"
-                container.addView(textView)
+            // Filter out the "description" key
+            val dataToShow = entity.data.filterKeys { it != "description" }.entries.toList()
+
+            dataToShow.forEachIndexed { index, entry ->
+                val value = when (val raw = entry.value) {
+                    is Double -> if (raw == raw.toInt().toDouble()) raw.toInt().toString() else raw.toString()
+                    is Float -> if (raw == raw.toInt().toFloat()) raw.toInt().toString() else raw.toString()
+                    else -> raw?.toString() ?: "N/A"
+                }
+
+                val valueView = TextView(container.context).apply {
+                    text = value
+                    textSize = 16f
+                    setPadding(0, 0, 0, 12)
+
+                    // Make only the first item bold
+                    if (index == 0) {
+                        setTypeface(null, Typeface.BOLD)
+                    }
+                }
+
+                container.addView(valueView)
             }
 
             itemView.setOnClickListener {
@@ -36,7 +54,7 @@ class EntityAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EntityViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_entity_dynamic, parent, false)
+            .inflate(R.layout.item_entity, parent, false)
         return EntityViewHolder(view)
     }
 

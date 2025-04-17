@@ -45,6 +45,7 @@ android {
 dependencies {
     // ✅ Hilt
     implementation(libs.hilt.android)
+    implementation(libs.androidx.ui.text.android)
     kapt(libs.hilt.compiler.v2511)
     testImplementation(libs.hilt.android.testing)
 

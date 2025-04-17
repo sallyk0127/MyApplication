@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.example.myapplication.databinding.FragmentDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
+import android.graphics.Typeface
 
 @AndroidEntryPoint
 class DetailsFragment : Fragment() {
@@ -32,17 +33,50 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val entity = args.entity
-
-        // Clear previous views
         binding.detailsContainer.removeAllViews()
 
+        // Show all fields except "description"
         entity.data.forEach { (key, value) ->
-            val textView = TextView(requireContext()).apply {
-                text = "${key.replaceFirstChar { it.uppercase() }}: ${value ?: "N/A"}"
-                textSize = 16f
-                setPadding(0, 8, 0, 8)
+            if (key != "description") {
+                val titleView = TextView(requireContext()).apply {
+                    text = key.replaceFirstChar { it.uppercase() }
+                    textSize = 16f
+                    setTypeface(null, Typeface.BOLD)
+                    setPadding(0, 12, 0, 4)
+                }
+
+                val valueView = TextView(requireContext()).apply {
+                    text = when (value) {
+                        is Double -> if (value == value.toInt().toDouble()) value.toInt().toString() else value.toString()
+                        is Float -> if (value == value.toInt().toFloat()) value.toInt().toString() else value.toString()
+                        else -> value?.toString() ?: "N/A"
+                    }
+                    textSize = 16f
+                    setPadding(0, 0, 0, 8)
+                }
+
+                binding.detailsContainer.addView(titleView)
+                binding.detailsContainer.addView(valueView)
             }
-            binding.detailsContainer.addView(textView)
+        }
+
+        // Handle description if present
+        entity.description?.let { descriptionText ->
+            val descTitle = TextView(requireContext()).apply {
+                text = "Description"
+                textSize = 16f
+                setTypeface(null, Typeface.BOLD)
+                setPadding(0, 16, 0, 4)
+            }
+
+            val descValue = TextView(requireContext()).apply {
+                text = descriptionText
+                textSize = 16f
+                setPadding(0, 0, 0, 8)
+            }
+
+            binding.detailsContainer.addView(descTitle)
+            binding.detailsContainer.addView(descValue)
         }
     }
 
